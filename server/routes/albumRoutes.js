@@ -4,7 +4,8 @@
 
 // in TM's, our models are handled in the controllers (e.g: entryModel). This app. here is much more simple.
 const Album = require('../models/album');
-const router = require('express').Router()
+const router = require('express').Router();
+const upload = require('../middleware/multer');
 
 // add new album
 router.post("/add", (req, res) => {
@@ -50,6 +51,28 @@ router.get("/", (req, res) => {
 // example: http://localhost:5000/albums/63aff11cc0614f79ef03249b
 // THIS IS SUPER EASY
 router.get("/:albumId", (req, res) => {
+  const albumId = req.params.albumId;   // where do we get albumId? FROM THE ROUTE ITSELF! (NICE)
+  Album.findById(albumId).exec((err, album) => {
+    if (err) {
+      return res.json({
+        status: false,
+        message: "Server error -Roman", 
+        result: err,  
+      })
+    }
+    return res.json({
+      status: true,
+      message: "getting individual album successful",
+      result: album,
+    });
+  });
+});
+
+// PUT (or upload) image  
+// example: http://localhost:5000/albums/63aff11cc0614f79ef03249b
+// HERE is the only place we use our "upload" middleware. Never seen middleware used this way,
+// with array(). The 3 dictates that the max. amount of files that can be uploaded at once is 3. 
+router.put("/upload/:albumId", upload.array("image", 3), async (req, res) => {
   const albumId = req.params.albumId;   // where do we get albumId? FROM THE ROUTE ITSELF! (NICE)
   Album.findById(albumId).exec((err, album) => {
     if (err) {
