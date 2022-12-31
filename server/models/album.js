@@ -1,3 +1,5 @@
+// THIS DETERMINES WHAT TO ADD TO POSTMAN
+
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
