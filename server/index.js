@@ -12,6 +12,10 @@ app.use(bodyParser.urlencoded({ extended: true }));   // to get the value from t
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "uploads")));
 
+// TM'S ROUTES (IN SERVER.JS)
+//app.use('/api/entries', require('./routes/entryRoutes'))
+app.use('/albums', require('./routes/albumRoutes'))  
+
 const mongoURI = 
   "mongodb+srv://ronnoverro:streets123@imagecluster2.sq4t8aa.mongodb.net/?retryWrites=true&w=majority"
 
