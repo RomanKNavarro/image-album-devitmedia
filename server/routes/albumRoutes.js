@@ -7,7 +7,7 @@ const Album = require('../models/album');
 const router = require('express').Router()
 
 router.post("/add", (req, res) => {
-  const newAlbum = new Album;
+  const newAlbum = new Album(req.body);
   newAlbum.save((err, data) => {
     if (err) {
       return res.json({
@@ -19,7 +19,7 @@ router.post("/add", (req, res) => {
     return res.json({
       status: false,
       message: "Album added",
-      result: err,
+      result: data,
     })
   })
 })
