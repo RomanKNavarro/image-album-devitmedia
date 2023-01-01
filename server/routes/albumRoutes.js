@@ -6,6 +6,7 @@
 const Album = require('../models/album');
 const router = require('express').Router();
 const upload = require('../middleware/multer');
+const fs = require('fs'); // we use fs to remove files from the "uploads" folder
 
 // add new album
 router.post("/add", (req, res) => {
@@ -73,6 +74,7 @@ router.get("/:albumId", (req, res) => {
 // example: http://localhost:5000/albums/upload/63aff11cc0614f79ef03249b
 // HERE is the only place we use our "upload" middleware. Never seen middleware used this way,
 // with array(). The 3 dictates the max. amount of files that can be uploaded at once. 
+// this is also the only of two routes (also delete) where we use an "async" func in. 
 // in our route: WE JUST PASS THE ALBUM ID, NOT THE FILENAME OR ANYTHING LOL
 router.put("/upload/:albumId", upload.array("images", 3), async (req, res) => {
   // YOO? Even though my Model prop. is named "images", I think the above (prev. "image") changes it to "image"! -YES
@@ -115,6 +117,43 @@ router.put("/upload/:albumId", upload.array("images", 3), async (req, res) => {
     }
   );
   /* This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.*/ 
+});
+
+// DELETE IMAGE (YES   IMAGE!!!)  (ALSO a put request)
+// example: http://localhost:5000/albums/removeImage/63aff089a726768e8a91cbff (IN X-WWW-FORM. WE PASS ALBUM, NOT FILE)
+// only arg on postman: fileName: 1672600719571-images (we can pass BOTH file.fieldname & file.originalname)
+router.put("/removeImage/:albumId", async (req, res) => {
+  const albumId = req.params.albumId;   
+  // this determines that we need to pass a "filename" field to the request in postman:
+  const fileName = req.body.fileName;    
+  Album.findOneAndUpdate(
+    {
+      _id: albumId,
+    },
+    {
+      // "pull" (or delete) the given fileName from the album Model's images array.
+      $pull: {images: fileName},  
+    },
+    // keep this here too, like in upload:
+    {new: true},
+    // our callback remains largely the same: 
+    function(err, data) { 
+      if (err) {
+        return res.json({
+          status: false,
+          message: "Server error -Roman", 
+          result: err,  
+        });
+      }
+      const path = "server/uploads/" + fileName;  // path of file to delete (from uploads folder, NOT the database)
+      fs.unlinkSync(path);
+      return res.json({
+        status: true,
+        message: "remove image successful",
+        result: data,
+      });
+    }
+  );
 });
 
 module.exports = router;
