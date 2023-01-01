@@ -6,6 +6,8 @@ const Schema = mongoose.Schema;
 const albumSchema = new Schema({
   name: {type: String, required: [true, 'Please add a name']}, 
   description: {type: String, required: [true, 'bofa says to add a description']},
+
+  // the images optional arg is an array of strings. Used in albumRoutes' put route:
   images: {
     type: [String],
     required: false
