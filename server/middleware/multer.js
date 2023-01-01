@@ -9,7 +9,8 @@ var storage = multer.diskStorage({
     cb(null, './server/uploads')  // original path looks wrong: './server/uploads' 
   },
   filename: function (req, file, cb) {
-    cb(null, `${Date.now()}-${file.fieldname}`);  
+    // cb(null, `${Date.now()}-${file.fieldname}`); this names the files as: 1672531722526-image, which isn't what we want
+    cb(null, `${Date.now()}-${file.originalname}`); // now they are: 1672600966595-homelessNigga.png
   },
 });
 
