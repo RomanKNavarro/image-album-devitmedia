@@ -134,8 +134,11 @@ router.put("/removeImage/:albumId", async (req, res) => {
       // "pull" (or delete) the given fileName from the album Model's images array.
       $pull: {images: fileName},  
     },
-    // keep this here too, like in upload:
+    // Here's an explanation on what happens on commenting out this (very important!) option: 
     {new: true},
+    /* deleting an image does not immediately remove it from the database (unlike from the local folder). BUT,
+       it deletes it only after another file has been deleted, and so on (HTMS!) */
+
     // our callback remains largely the same: 
     function(err, data) { 
       if (err) {
