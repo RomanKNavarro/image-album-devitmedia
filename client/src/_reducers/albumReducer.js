@@ -35,6 +35,7 @@ const albumReducer = (state = initialState, action) => {
       return {
         albumDetail: action.payload.result,
       };
+    // DEFAULT CASE IS MANDATORY. Otherwise, there's errors.
     default:
       return state;
   }
