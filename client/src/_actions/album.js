@@ -21,7 +21,7 @@ export const fetchAlbums = () => {
   };
 };
 
-/* why do we need to pass data here and not in fetchAlbums? (he skipped over making this func)
+/* why do we need to pass data here and not in fetchAlbums? data is the "body" (??)
   JUDGEMENT: data used in the post request, which requires the data to upload new album. See 
   AddAlbum.js */
 
