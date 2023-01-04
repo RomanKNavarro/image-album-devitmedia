@@ -4,11 +4,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { addAlbum } from "../_actions/album";
 
-function AddAlbum() {
+// we pass "props" b/c we need to get the album id from the url 
+// THIS FUNC NOT TO BE CONFUSED W/ ADDALBUM FROM OUR _ACTIONS 
+// THIS ONE IS CAPITALIZED. IT'S A WHOLE ASS COMPONENT THAT WE EXPORT.
+function AddAlbum(props) {
   const dispatch = useDispatch();
 
-  const [values, setvalues] = useState({});
+  // value of the album name & description, set by handleInputChange() vvv 
+  const [values, setvalues] = useState({}); 
 
+  // used to...
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setvalues({
@@ -36,7 +41,7 @@ function AddAlbum() {
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
             <a href="/">Albums</a>
-          </li> {/* <- we modify here */}
+          </li> {/* <- we modify here lol*/}
           <li class="breadcrumb-item active" aria-current="page">
             Add Album
           </li>
@@ -55,6 +60,7 @@ function AddAlbum() {
               name="name"
               className="form-control"
               placeholder="Enter album name"
+              // WHY DO WE USE HANDLEINPUTCHANGE TWICE? ONCE FOR ALBUM NAME, OTHER FOR DESCRIPTION (EASY)
               onChange={handleInputChange}
             />
           </div>

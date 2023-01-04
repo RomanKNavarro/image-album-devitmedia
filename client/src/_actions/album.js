@@ -20,3 +20,15 @@ export const fetchAlbums = () => {
     payload: req,
   };
 };
+
+/* why do we need to pass data here and not in fetchAlbums? (he skipped over making this func)
+  JUDGEMENT: data used in the post request, which requires the data to upload new album. See 
+  AddAlbum.js */
+
+  export const addAlbum = (data) => {
+  const req = axios.post("/albums/add", data).then((res) => res.data);
+  return {
+    type: ADD_ALBUM,
+    payload: req,
+  };
+};
