@@ -27,6 +27,7 @@ const albumReducer = (state = initialState, action) => {
         ...state,
         addedAlbum: action.payload,
       };
+    // I WOULD'VE THOUGHT THE SHIT TO UPLOAD IMAGES WOULD BE MORE COMPLEX?
     case ACTION_TYPES.UPLOAD_IMAGE:
       return {
         albumDetail: action.payload.result,

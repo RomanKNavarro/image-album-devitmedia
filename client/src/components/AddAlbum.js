@@ -93,6 +93,7 @@
 // }
 // export default AddAlbum
 
+// WHY DON'T WE USE USEEFFECT HERE?
 import React, { useState, useEffect } from "react";
 import { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -177,4 +178,4 @@ function AddAlbum(props) {
 }
 
 export default AddAlbum;
-// export default withRouter(AddAlbum);
+// export default withRouter(AddAlbum);   NOPE LOL
