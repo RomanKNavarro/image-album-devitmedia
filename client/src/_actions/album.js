@@ -24,7 +24,7 @@ export const fetchAlbums = () => {
 };
 
 // we pass this only the album id. THESE ENDPOINTS (THE URLS) WE DEFINE HERE.
-// SO WTF IS THE ALBUM DETAIL?
+// SO WTF IS THE ALBUM DETAIL? IT GETS THE INDIVIDUAL ALBUM'S INFO LMAOOOOOO
 export const fetchAlbumDetail = (id) => {
   const req = axios.get(`/albums/${id}`).then((res) => res.data);
   console.log("~~~~~albumdetail: ", req);

@@ -17,6 +17,8 @@ const albumReducer = (state = initialState, action) => {
         albumList: [...action.payload.result],    
         // not sure how "action.payload.result" works though. I GET IT: see album.js
       };
+
+    // IMPORTANT SHIT 4 ERROR:
     case ACTION_TYPES.FETCH_ALBUM_DETAIL:
       return {
         albumDetail: action.payload.result, 
@@ -42,3 +44,4 @@ const albumReducer = (state = initialState, action) => {
   }
 };
 export default albumReducer;
+// WHERE ARE REDUCERS USED? _reducers/index.js (frontend)

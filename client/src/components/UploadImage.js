@@ -1,61 +1,150 @@
+// import React, { useState, useEffect } from "react";
+// import Dropzone from "react-dropzone";
+// import { useDispatch, useSelector } from "react-redux";
+// import { toast } from "react-toastify";
+// import { uploadImages, fetchAlbumDetail, removeImage } from "../_actions/album";
+
+// // FOR REPLACING props.match.params: 
+// import { Routes, Route, useParams } from 'react-router-dom';
+
+// function UploadImage(props) {
+//   const dispatch = useDispatch();
+//   // vvv this shit looks deprecated. What's it supposed to do?
+//   //const albumId = props.match.params.id;
+//   let { albumId } = useParams();
+  
+//   // where is this albumDetail defined? albumReducer.js
+//   const albumDetail = useSelector((state) => state.album.albumDetail);
+  
+
+//   // we use useEffect in all of our components (except addAlbum for som reason). 
+//   useEffect(() => {
+//     dispatch(fetchAlbumDetail(albumId));
+//   }, []);
+
+//   // TODO: EXPLAIN THIS SHIT LATER
+//   const onDrop = (files) => {
+//     let formData = new FormData();
+//     const config = {
+//       header: { "content-type": "multipart/form-data" },
+//     };
+//     files.map((file, index) => {
+//       formData.append("image", file);
+//     });
+
+//     dispatch(uploadImages(albumId, formData, config)).then((res) => {
+//       if (res.payload.status) {
+//         toast.success(res.payload.message);
+//       }
+//     });
+//   };
+
+//   return (
+//     // COPIED OVER FROM ALBUM LIST (bootstrap)
+//     <div>
+//       {/* lol what's breadcrumb again? */}
+//       <nav aria-label="breadcrumb">
+//         <ol class="breadcrumb">
+//           <li class="breadcrumb-item"><a href="/">Albums</a></li> {/* <- we modify here */}
+//           <li class="breadcrumb-item active" aria-current="page">
+//             Upload Image
+//           </li>
+//         </ol>
+//       </nav>
+
+//       {/* EVERYTHING PASTED. THIS STUFF PASTED. Show all the images in each album */}
+//       <div className="card shadow-sm">
+//         <div className="card-header">
+//           <h5>Upload Image for Album {albumDetail.name}</h5>
+//         </div>
+//         <div className="card-body">
+//           <Dropzone onDrop={onDrop}>
+//             {({ getRootProps, getInputProps }) => (
+//               <div
+//                 className="m-1"
+//                 style={{
+//                   width: "350px",
+//                   height: "240px",
+//                   border: "1px solid lightgray",
+//                   display: "flex",
+//                   alignItems: "center",
+//                   justifyContent: "center",
+//                 }}
+//                 {...getRootProps()}
+//               >
+//                 <input {...getInputProps()} />
+//                 <p>Drag and drop files here or click to upload</p>
+//               </div>
+//             )}
+//           </Dropzone>  
+//         </div> 
+//       </div>
+//     </div>
+//   )
+// }
+// export default UploadImage
+
 import React, { useState, useEffect } from "react";
-import {Fragment} from 'react';
+import Dropzone from "react-dropzone";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import { uploadImages, fetchAlbumDetail, removeImage } from "../_actions/album";
+
+import { Routes, Route, useParams } from 'react-router-dom';
 
 function UploadImage(props) {
   const dispatch = useDispatch();
-  // vvv this shit looks deprecated. 
-  const albumId = props.match.params.id;
-  // where is this albumDetail defined? albumReducer.js
+  //const albumId = props.match.params.id;
+  let { albumId } = useParams();
+  //   const [albumInfo, setAlbumInfo] = useState({});
   const albumDetail = useSelector((state) => state.album.albumDetail);
 
-  // we use useEffect in all of our components (except addAlbum for som reason). 
   useEffect(() => {
     dispatch(fetchAlbumDetail(albumId));
   }, []);
 
+  const onDrop = (files) => {
+    let formData = new FormData();
+    const config = {
+      header: { "content-type": "multipart/form-data" },
+    };
+    files.map((file, index) => {
+      formData.append("image", file);
+    });
+
+    dispatch(uploadImages(albumId, formData, config)).then((res) => {
+      if (res.payload.status) {
+        toast.success(res.payload.message);
+      }
+    });
+  };
+
+  const handleDelete = (albumId, imageName) => {
+    dispatch(removeImage(albumId, imageName)).then((res) => {
+      if (res.payload.status) {
+        toast.success(res.payload.message);
+      }
+    });
+  };
   return (
-    // COPIED OVER FROM ALBUM LIST (bootstrap)
-    <Fragment>
+    <div>
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/">Albums</a></li> {/* <- we modify here */}
+          <li class="breadcrumb-item">
+            <a href="/">Albums</a>
+          </li>
           <li class="breadcrumb-item active" aria-current="page">
-            Upload Image
+            Upload
           </li>
         </ol>
       </nav>
-
-      {/* THIS STUFF PASTED */}
-      <div className="row m-1">
-        {/* CRAZY: WITHOUT ADDING THE "albumDetail.images &&" FIRST, WE GET ERROR:
-        TypeError: albumDetail.images is undefined. HOW?? */}
-        {albumDetail.images &&
-          albumDetail.images.map((image, index) => (
-            <div className="card col-md-3 mb-2">
-              <div className="card-header bg-white">
-                <span>{image}</span>
-                <button
-                  type="button"
-                  className="btn btn-danger float-end"
-                  onClick={() => handleDelete(albumId, image)}
-                >
-                  <i class="fas fa-backspace"></i>
-                </button>
-              </div>
-              <div className="card-body p-1">
-                <img
-                  style={{ width: "100%", maxHeight: "180px" }}
-                  class="img-thumbnail"
-                  src={`http://localhost:5000/${image}`}    
-                  // HERE IS HOW WE GET THE IMAGE IN ORDER TO PASTE IT. 
-                />
-              </div>
-            </div>
-          ))}
+      <div className="card shadow-sm">
+        <div className="card-header">
+          <h5>Upload Image for Album {albumDetail.name}</h5>
+        </div>
       </div>
-    </Fragment>
-  )
+    </div>
+  );
 }
-export default UploadImage
+
+export default UploadImage;

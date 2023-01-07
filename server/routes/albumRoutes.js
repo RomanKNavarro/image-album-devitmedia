@@ -48,7 +48,7 @@ router.get("/", (req, res) => {
   })
 })
 
-// GET individual album 
+// GET individual album's shit
 // example: http://localhost:5000/albums/63aff11cc0614f79ef03249b
 // THIS IS SUPER EASY
 router.get("/:albumId", (req, res) => {
@@ -119,7 +119,7 @@ router.put("/upload/:albumId", upload.array("images", 3), async (req, res) => {
   /* This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.*/ 
 });
 
-// DELETE IMAGE (YES   IMAGE!!!)  (ALSO a put request)
+// DELETE IMAGE (YES FUCKING IMAGE!!!)  (ALSO a put request)
 // example: http://localhost:5000/albums/removeImage/63aff089a726768e8a91cbff (IN X-WWW-FORM. WE PASS ALBUM, NOT FILE)
 // only arg on postman: fileName: 1672600719571-images (we can pass BOTH file.fieldname & file.originalname)
 router.put("/removeImage/:albumId", async (req, res) => {
