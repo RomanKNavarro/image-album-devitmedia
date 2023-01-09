@@ -16,10 +16,12 @@ const composeEnhancers =
         shouldHotREload: false,
       })
     : compose;
-// const configureStore = () => { ORIGINAL
+    
 const configStore = () => {
-  const store = configureStore(
-    rootReducer,
+  const store = configureStore({
+    reducer: {
+      rootReducer
+    },
     {},
     composeEnhancers(applyMiddleware(promiseMiddleware, reduxThunk))
   );
@@ -27,4 +29,27 @@ const configStore = () => {
 };
 
 export default configStore;
-//  WHERE IS THIS IMPORTED?
+//  WHERE IS THIS IMPORTED? INDEX.JS
+
+
+// ***************** CRAP ABOVE IS DEPRECATED. NEW STUFF HERE:
+// import { configureStore } from '@reduxjs/toolkit'; 
+// import rootReducer from "../_reducers"
+
+// const configStore = () => {
+//   const store = configureStore({
+//     reducer: {
+//       rootReducer
+//     },
+//   })
+//   return store
+// }
+
+// export default configStore;
+
+// TM'S:
+// export const store = configureStore({
+//   reducer: {
+//     rootReducer
+//   },
+// });
